@@ -13,18 +13,16 @@ public struct CodeLocation {
 
 public struct ErrorInCode: Error, CustomStringConvertible {
 
-  public let header: StaticString
   public let message: String
   public let location: CodeLocation
 
   @usableFromInline
-  internal init(header: StaticString, message: String, location: CodeLocation) {
-    self.header = header
+  internal init(message: String, location: CodeLocation) {
     self.message = message
     self.location = location
   }
 
   public var description: String {
-    "\(header): \(message), file \(location.fileID), line \(location.line), column \(location.column)"
+    "Error in code, message: \(message), file \(location.fileID), line \(location.line), column \(location.column)"
   }
 }

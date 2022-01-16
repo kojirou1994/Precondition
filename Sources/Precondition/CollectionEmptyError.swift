@@ -4,7 +4,7 @@ extension Collection {
   @inlinable
   public func notEmpty(_ message: @autoclosure () -> String = String(),
                        fileID: StaticString = #fileID, line: UInt = #line, column: UInt = #column) throws -> Self {
-    try notEmpty(ErrorInCode(header: "Collection is empty", message: message(), location: CodeLocation(fileID: fileID, line: line, column: column)))
+    try notEmpty(ErrorInCode(message: message(), location: CodeLocation(fileID: fileID, line: line, column: column)))
   }
 
   @discardableResult
@@ -16,4 +16,22 @@ extension Collection {
     return self
   }
 
+}
+
+extension Optional where Wrapped: Collection {
+  @discardableResult
+  @inlinable
+  public func notEmpty(_ message: @autoclosure () -> String = String(),
+                       fileID: StaticString = #fileID, line: UInt = #line, column: UInt = #column) throws -> Wrapped {
+    try notEmpty(ErrorInCode(message: message(), location: CodeLocation(fileID: fileID, line: line, column: column)))
+  }
+
+  @discardableResult
+  @inlinable
+  public func notEmpty<E: Error>(_ error: @autoclosure () -> E) throws -> Wrapped {
+    guard let unwrap = self, !unwrap.isEmpty else {
+      throw error()
+    }
+    return unwrap
+  }
 }

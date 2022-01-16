@@ -18,7 +18,7 @@ final class PreconditionTests: XCTestCase {
     XCTAssertThrowsError(try emptyCollection.notEmpty()) { error in
       XCTAssertTrue(error is ErrorInCode)
     }
-
+    // custom error type
     XCTAssertThrowsError(try emptyCollection.notEmpty(CustomError())) { error in
       XCTAssertTrue(error is CustomError)
     }
@@ -32,6 +32,23 @@ final class PreconditionTests: XCTestCase {
 
     testNonEmptyCollection(CollectionOfOne(0))
     testNonEmptyCollection(["A", "B"])
+
+    // optional collection
+    var optionalCollection: [UInt8]?
+    XCTAssertThrowsError(try optionalCollection.notEmpty(errorMessage)) { error in
+      XCTAssertTrue(error is ErrorInCode)
+    }
+    // no message
+    XCTAssertThrowsError(try optionalCollection.notEmpty()) { error in
+      XCTAssertTrue(error is ErrorInCode)
+    }
+    // custom error type
+    XCTAssertThrowsError(try optionalCollection.notEmpty(CustomError())) { error in
+      XCTAssertTrue(error is CustomError)
+    }
+
+    optionalCollection = [1, 2, 3, 4]
+    XCTAssertNoThrow(try optionalCollection.notEmpty())
   }
 
   func testOptionalNilError() {

@@ -1,6 +1,6 @@
 @inlinable
 public func preconditionOrThrow(_ condition: Bool, _ message: @autoclosure () -> String = String(), fileID: StaticString = #fileID, line: UInt = #line, column: UInt = #column) throws {
-  try preconditionOrThrow(condition, ErrorInCode(header: "Precondition failed", message: message(), location: CodeLocation(fileID: fileID, line: line, column: column)))
+  try preconditionOrThrow(condition, ErrorInCode(message: message(), location: CodeLocation(fileID: fileID, line: line, column: column)))
 }
 
 @inlinable
