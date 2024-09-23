@@ -1,4 +1,3 @@
-#if compiler(>=6.0)
 @_alwaysEmitIntoClient
 @inlinable @inline(__always)
 public func preconditionOrThrow(_ condition: Bool, _ message: @autoclosure () -> String = String(), fileID: StaticString = #fileID, line: UInt = #line, column: UInt = #column) throws(ErrorInCode) {
@@ -12,18 +11,3 @@ public func preconditionOrThrow<E: Error>(_ condition: Bool, _ error: @autoclosu
     throw error()
   }
 }
-#else
-@_alwaysEmitIntoClient
-@inlinable @inline(__always)
-public func preconditionOrThrow(_ condition: Bool, _ message: @autoclosure () -> String = String(), fileID: StaticString = #fileID, line: UInt = #line, column: UInt = #column) throws {
-  try preconditionOrThrow(condition, ErrorInCode(message: message(), location: CodeLocation(fileID: fileID, line: line, column: column)))
-}
-
-@_alwaysEmitIntoClient
-@inlinable @inline(__always)
-public func preconditionOrThrow<E: Error>(_ condition: Bool, _ error: @autoclosure () -> E) throws {
-  if !condition {
-    throw error()
-  }
-}
-#endif

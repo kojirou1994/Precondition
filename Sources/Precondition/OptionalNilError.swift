@@ -1,4 +1,3 @@
-#if compiler(>=6.0)
 extension Optional where Wrapped: ~Copyable {
 
   @discardableResult
@@ -20,26 +19,3 @@ extension Optional where Wrapped: ~Copyable {
   }
 
 }
-#else
-extension Optional {
-
-  @discardableResult
-  @_alwaysEmitIntoClient
-  @inlinable @inline(__always)
-  public consuming func unwrap(_ message: @autoclosure () -> String = String(),
-                     fileID: StaticString = #fileID, line: UInt = #line, column: UInt = #column) throws -> Wrapped {
-    try unwrap(ErrorInCode(message: message(), location: CodeLocation(fileID: fileID, line: line, column: column)))
-  }
-
-  @discardableResult
-  @_alwaysEmitIntoClient
-  @inlinable @inline(__always)
-  public consuming func unwrap<E: Error>(_ error: @autoclosure () -> E) throws -> Wrapped {
-    guard let value = self else {
-      throw error()
-    }
-    return value
-  }
-
-}
-#endif

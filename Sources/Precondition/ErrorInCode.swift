@@ -1,4 +1,4 @@
-public struct CodeLocation {
+public struct CodeLocation: Sendable {
 
   public let fileID: StaticString
   public let line: UInt

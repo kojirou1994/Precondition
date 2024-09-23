@@ -86,4 +86,21 @@ final class PreconditionTests: XCTestCase {
     }
   }
 
+  func testNoncopyableNilError() {
+    struct N: ~Copyable {}
+
+    var value: N?
+
+    do {
+      try value.unwrap()
+      XCTFail("should throws error")
+    } catch { }
+
+    value = .init()
+    do {
+      try value.unwrap()
+    } catch {
+      XCTFail("should not throws error")
+    }
+  }
 }
