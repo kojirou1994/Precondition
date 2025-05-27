@@ -103,4 +103,10 @@ final class PreconditionTests: XCTestCase {
       XCTFail("should not throws error")
     }
   }
+
+  func testDescription() {
+    XCTAssertThrowsError(try preconditionOrThrow(false)) { error in
+      _ = String(describing: error)
+    }
+  }
 }
